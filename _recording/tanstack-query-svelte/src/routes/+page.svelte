@@ -1,4 +1,4 @@
-<div style="padding: 10px; box-sizing: border-bo">
+<div style="padding: 10px; box-sizing: border-box">
   <div>
     <div
       style="display: flex; align-items: center; justify-content: space-between"

@@ -1,4 +1,4 @@
-import LoaderComponent from "./Loader";
+import LoaderComponent from "../components/Loader";
 
 const { isLoading, data } = {};
 
