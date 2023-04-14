@@ -1,15 +1,41 @@
-<script setup></script>
+<script setup>
+import { useQuery, useMutation } from '@tanstack/vue-query'
+
+// const { isLoading, data, ...query } = useQuery({
+//   queryKey: ['data'],
+//   queryFn: () => fetch('https://reqres.in/api/users').then((res) => res.json())
+// })
+
+const { isLoading, data, ...mutation } = useMutation({
+  mutationKey: ['data'],
+  mutationFn: () => fetch('https://reqres.in/api/users').then((res) => res.json())
+})
+
+const fetchDataHandler = async () => {
+  // query.refetch()
+  // mutation.mutate()
+  const response = await mutation.mutateAsync()
+  console.log('response', response)
+}
+</script>
 
 <template>
   <div style="width: 500px; maxwidth: 100%; margin: 0 auto; padding: 10px">
     <div style="padding: 10px; box-sizing: border-bo">
       <div>
         <div style="display: flex; align-items: center; justify-content: space-between">
-          <strong>Sample Case: React-Query</strong>
-          <button type="button" disabled :class="`ui primary button loading`">Fetch Data</button>
+          <strong>Sample Case: Vue-Query</strong>
+          <button
+            @click="fetchDataHandler"
+            type="button"
+            :disabled="isLoading"
+            :class="`ui primary button ${isLoading}`"
+          >
+            Fetch Data
+          </button>
         </div>
         <div class="ui divider"></div>
-        <div class="ui grid">
+        <div v-if="isLoading" class="ui grid">
           <div class="column">
             <div class="ui segment" style="padding: 50px 0">
               <div class="ui active inverted dimmer">
@@ -19,34 +45,14 @@
             </div>
           </div>
         </div>
-        <div class="ui two column grid">
-          <div class="column">
+        <div v-if="!isLoading && data?.data?.length > 0" class="ui two column grid">
+          <div v-for="n in data.data" :key="n.id" class="column">
             <div class="ui fluid card">
               <div class="image">
-                <img src=" https://www.w3schools.com/howto/img_avatar.png" />
+                <img :src="n.avatar" />
               </div>
               <div class="content">
-                <a class="header">Daniel Louise</a>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="ui fluid card">
-              <div class="image">
-                <img src="https://www.w3schools.com/howto/img_avatar.png" />
-              </div>
-              <div class="content">
-                <a class="header">Helen Troy</a>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="ui fluid card">
-              <div class="image">
-                <img src="https://www.w3schools.com/howto/img_avatar.png" />
-              </div>
-              <div class="content">
-                <a class="header">Elliot Fu</a>
+                <a class="header">{{ `${n.first_name} ${n.last_name}` }}</a>
               </div>
             </div>
           </div>

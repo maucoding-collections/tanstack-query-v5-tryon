@@ -2,12 +2,14 @@ lockfileVersion: 5.4
 
 specifiers:
   '@solidjs/router': ^0.8.2
+  '@tanstack/solid-query': ^4.29.1
   solid-js: ^1.6.10
   vite: ^4.1.1
   vite-plugin-solid: ^2.5.0
 
 dependencies:
   '@solidjs/router': 0.8.2_solid-js@1.6.10
+  '@tanstack/solid-query': 4.29.1_solid-js@1.6.10
   solid-js: 1.6.10
 
 devDependencies:
@@ -572,6 +574,19 @@ packages:
     peerDependencies:
       solid-js: ^1.5.3
     dependencies:
+      solid-js: 1.6.10
+    dev: false
+
+  /@tanstack/query-core/4.29.1:
+    resolution: {integrity: sha512-vkPewLEG8ua0efo3SsVT0BcBtkq5RZX8oPhDAyKL+k/rdOYSQTEocfGEXSaBwIwsXeOGBUpfKqI+UmHvNqdWXg==}
+    dev: false
+
+  /@tanstack/solid-query/4.29.1_solid-js@1.6.10:
+    resolution: {integrity: sha512-XvRfk7Epi0gh5p+sgaMrrFu2yLY0nIq1wYbcBExehiNgyIfOw032xyZLNk5LJTAy5bLwMqL7hYR92j+ThtZ8mA==}
+    peerDependencies:
+      solid-js: ^1.5.7
+    dependencies:
+      '@tanstack/query-core': 4.29.1
       solid-js: 1.6.10
     dev: false
 

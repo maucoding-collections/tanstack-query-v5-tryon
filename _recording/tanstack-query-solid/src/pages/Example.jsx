@@ -1,8 +1,28 @@
+import { For, Match, Switch } from "solid-js";
 import LoaderComponent from "../components/Loader";
 
-const { isLoading, data } = {};
+import { createMutation, createQuery } from "@tanstack/solid-query";
 
 const ExampleComponent = () => {
+  const query = createQuery({
+    queryKey: () => ["data"],
+    queryFn: () =>
+      fetch("https://reqres.in/api/users").then((res) => res.json()),
+  });
+
+  const mutation = createMutation({
+    mutationKey: () => ["data"],
+    mutationFn: () =>
+      fetch("https://reqres.in/api/users").then((res) => res.json()),
+  });
+
+  const fetchHandler = async () => {
+    // query.refetch();
+    // mutation.mutate();
+    const Response = await mutation.mutateAsync();
+    console.log("response", Response);
+  };
+
   return (
     <div
       style={{
@@ -19,12 +39,12 @@ const ExampleComponent = () => {
           "justify-content": "space-between",
         }}
       >
-        <strong>Sample Case: React-Query</strong>
+        <strong>Sample Case: Solid-Query</strong>
         <button
           type="button"
-          //   onClick={fetchDataHandler}
-          disabled={isLoading}
-          className={`ui primary button ${isLoading && "loading"}`}
+          onClick={fetchHandler}
+          disabled={mutation.isLoading}
+          className={`ui primary button ${mutation.isLoading && "loading"}`}
         >
           Fetch Data
         </button>
@@ -32,30 +52,32 @@ const ExampleComponent = () => {
 
       <div className="ui divider" />
 
-      <LoaderComponent />
+      <Switch>
+        <Match when={mutation.isLoading}>
+          <LoaderComponent />
+        </Match>
+      </Switch>
 
-      <div className="ui two column grid">
-        <div className="column">
-          <div className="ui fluid card">
-            <div className="image">
-              <img src=" https://www.w3schools.com/howto/img_avatar.png" />
-            </div>
-            <div className="content">
-              <a className="header">First Last</a>
-            </div>
+      <Switch>
+        <Match when={!mutation.isLoading && mutation?.data?.data?.length > 0}>
+          <div className="ui two column grid">
+            <For each={mutation.data.data}>
+              {(n) => (
+                <div className="column">
+                  <div className="ui fluid card">
+                    <div className="image">
+                      <img src={n.avatar} />
+                    </div>
+                    <div className="content">
+                      <a className="header">{`${n.first_name} ${n.last_name}`}</a>
+                    </div>
+                  </div>
+                </div>
+              )}
+            </For>
           </div>
-        </div>
-        <div className="column">
-          <div className="ui fluid card">
-            <div className="image">
-              <img src=" https://www.w3schools.com/howto/img_avatar.png" />
-            </div>
-            <div className="content">
-              <a className="header">First Last</a>
-            </div>
-          </div>
-        </div>
-      </div>
+        </Match>
+      </Switch>
     </div>
   );
 };
